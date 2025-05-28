@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface UserRepository {
 
     Optional<User> findByName(@Param("name") String name);
+    Optional<User> findById(@Param("userId") Integer userId);
     void save(User user);
 }
