@@ -10,10 +10,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetReservationHistoryOutDto {
-    private Integer id;
+    private Integer reservationId;
     private Timestamp startTime;
     private Timestamp endTime;
-    private String status;
-    private String name;
+    private String seatName;
     private String floor;
+    private String buildingName;
+    private String status;
 }

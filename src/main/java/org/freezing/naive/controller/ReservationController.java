@@ -3,17 +3,13 @@ package org.freezing.naive.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.freezing.naive.dto.DataResponse;
-import org.freezing.naive.dto.GetReservationHistoryOutDto;
+import jakarta.servlet.http.HttpServletRequest;
+import org.freezing.naive.dto.*;
 import org.freezing.naive.exception.BusinessException;
 import org.freezing.naive.service.ReservationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,6 +25,39 @@ public class ReservationController {
         try {
             List<GetReservationHistoryOutDto> reservationHistory = reservationService.getReservationHistory(startDate, endDate, skip, limit);
             return new ResponseEntity<>(new DataResponse(reservationHistory), HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+        }
+    }
+
+    @GetMapping("/reservations")
+    public ResponseEntity<?> getOwnReservations(HttpServletRequest request) {
+        try {
+            Integer userId = Integer.parseInt((String)request.getAttribute("userId"));
+            List<GetOwnReservationsOutDto> reservations = reservationService.getOwnReservations(userId);
+            return new ResponseEntity<>(new DataResponse(reservations), HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+        }
+    }
+
+    @PostMapping("/reservations")
+    public ResponseEntity<?> reserve(@RequestBody ReserveInDto reserveInDto, HttpServletRequest request) {
+        try {
+            Integer userId = Integer.parseInt((String)request.getAttribute("userId"));
+            reservationService.reserve(reserveInDto, userId);
+            return new ResponseEntity<>(new DataResponse("Successfully Reserved"), HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+        }
+    }
+
+    @PostMapping("/reservations/cancel")
+    public ResponseEntity<?> cancel(@RequestBody CancelReservationInDto cancelReservationInDto, HttpServletRequest request) {
+        try {
+            Integer userId = Integer.parseInt((String)request.getAttribute("userId"));
+            reservationService.cancel(cancelReservationInDto.getReservationId(), userId);
+            return new ResponseEntity<>(new DataResponse("Successfully Canceled"), HttpStatus.OK);
         } catch (BusinessException e) {
             return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }

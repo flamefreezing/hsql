@@ -1,0 +1,244 @@
+---------------------------------------------------------
+1. U0203. Retrieve All Buildings (Low Difficulty)
+
+GET http://localhost:8080/seats/buildings
+
+// 2xx
+status: 200 // optional
+data:
+    [
+        buildingId
+        buildingName
+    ]
+
+
+
+
+---------------------------------------------------------
+2. U0204. Retrieve Floor (Low Difficulty)
+
+GET http://localhost:8080/seats/floors?buildingId=1
+
+// 2xx
+status: 200 // optional
+data:
+    [
+        floorId
+        floor
+    ]
+
+
+
+
+---------------------------------------------------------
+3. U0205. Return Seat (Medium difficulty)
+
+GET http://localhost:8080/seats?floorId=1
+
+// 2xx
+data:
+    [
+        seatId
+        seatName
+        floor
+        buildingName
+    ]
+
+
+
+
+---------------------------------------------------------
+4. U0101.Retrieve Available Seat By Period (Medium difficulty)
+
+GET http://localhost:8080/seats/available?date=&startTime=&endTime=&skip=&limit=
+
+// 2xx
+status: 200 // optional
+data:
+    [
+        seatId
+        seatName
+        floor
+        buildingName
+    ]
+
+
+
+
+---------------------------------------------------------
+5. U0105.Retrieve Reservation History (Low Difficulty)
+
+GET http://localhost:8080/reservations/history?startDate=&endDate=&skip=&limit=
+
+// 2xx
+status: 200 // optional
+data:
+    [
+        reservationId
+        startTime
+        endTime
+        seatName
+        floor
+        buildingName
+        status
+    ]
+
+
+
+
+---------------------------------------------------------
+6. U0106.Retrieve My Reservation Status (Low Difficulty)
+
+GET http://localhost:8080/reservations
+
+// 2xx
+status: 200 // must
+data:
+    [
+        reservationId
+        startTime
+        endTime
+        seatName
+        floor
+        buildingName
+        status
+        extendedFromReservationId
+    ]
+
+
+
+
+---------------------------------------------------------
+7. U0102.Register Reservation (High difficulty)
+
+POST http://localhost:8080/reservations
+
+payload {
+    private Integer seatId;
+    private String date;
+    private String startTime;
+    private String endTime;
+}
+
+// 2xx
+status: 200 // must have
+data: string
+
+// 4xx
+response: {
+    data: {
+        error: string
+    }
+}
+
+
+
+
+---------------------------------------------------------
+8. U0103.Cancel Reservation (Low difficulty)
+
+POST http://localhost:8080/reservations/cancel
+
+payload {
+    private Integer reservationId;
+}
+
+// 2xx
+status: 200 // optional
+data: string
+
+// 4xx
+response: {
+    data: {
+        error: string
+    }
+}
+
+
+
+
+---------------------------------------------------------
+9. U0205. Return Seat (Medium difficulty)
+
+POST http://localhost:8080/seats/return
+
+payload {
+    private Integer reservationId;
+}
+
+// 2xx
+status: 200 // optional
+data: string
+
+// 4xx
+response: {
+    data: {
+        error: string
+    }
+}
+
+
+
+
+---------------------------------------------------------
+10. U0202.Check-in (Medium difficulty) - LOGIC tương tự RETURN
+
+POST http://localhost:8080/seats/check-in
+
+payload {
+    private Integer reservationId;
+}
+
+// 2xx
+status: 200 // optional
+data: string
+
+// 4xx
+response: {
+    data: {
+        error: string
+    }
+}
+
+
+
+
+---------------------------------------------------------
+11. A0101.Force Return Seat (Medium difficulty)
+
+POST http://localhost:8080/admin/return
+
+payload {
+    private Integer seatId;
+}
+
+// 2xx
+void
+
+// 4xx
+void
+
+
+
+
+---------------------------------------------------------
+12. U0104.Extend Reservation Time (Highest difficulty)
+
+POST http://localhost:8080/reservations/extend
+
+payload {
+    endTime: "2025-05-30 15:47" // endTime + 1h
+    reservationId: 44
+}
+
+// 2xx
+status: 200 // optional
+data: string
+
+// 4xx
+response: {
+    data: {
+        error: string
+    }
+}
+

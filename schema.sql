@@ -44,11 +44,11 @@ INSERT INTO building (name) VALUES
 
 -- FLOOR
 INSERT INTO floor (building_id, floor) VALUES
-                                           (1, '1F'), (1, '2F'),
-                                           (2, '1F'), (2, '2F'),
-                                           (3, '1F'), (3, '2F'),
-                                           (4, '1F'), (4, '2F'),
-                                           (5, '1F'), (5, '2F');
+                                           (1, 'G'), (1, '1F'),
+                                           (2, 'B1'), (2, '2F'),
+                                           (3, 'M'), (3, '3F'),
+                                           (4, 'PH'), (4, '1F'),
+                                           (5, 'R'), (5, 'B2');
 
 -- EMPLOYEE
 INSERT INTO employee (name, password)
@@ -56,13 +56,16 @@ SELECT 'Employee ' || nr, '123456' FROM unnest(sequence_array(1, 20, 1)) as i(nr
 
 -- SEAT: 10 seats mỗi floor → 10 * 10 = 100
 INSERT INTO seat (floor_id, name, status)
-SELECT f.id, 'S-' || f.id || '-' || nr,
+SELECT f.id, 'A' || '-' || nr,
        CASE
            WHEN MOD(nr, 10) = 0 THEN 'BROKEN'
            WHEN MOD(nr, 4) = 0 THEN 'UNAVAILABLE'
            ELSE 'AVAILABLE'
            END
 FROM floor f, unnest(sequence_array(1, 10, 1)) as i(nr);
+
+UPDATE seat
+SET status = TRIM(status) where 1 = 1;
 
 -- RESERVATION: sinh 100 bản ghi ngẫu nhiên
 -- Trạng thái: xoay vòng giữa các trạng thái để dễ test
@@ -88,6 +91,8 @@ SELECT
         END
 FROM unnest(sequence_array(1, 100, 1)) as i(nr);
 
+UPDATE reservation
+SET status = TRIM(status) where 1 = 1;
 
 select
     S.ID, S.NAME, S.STATUS, F.FLOOR, B.NAME as BUIDING

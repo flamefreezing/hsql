@@ -2,16 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="org.freezing.naive.repository.ReservationRepository">
 
 
+	<select id="findById" resultType="org.freezing.naive.dto.Reservation">
+		<![CDATA[
+		SELECT
+			*
+		FROM
+			RESERVATION R
+		WHERE
+			R.ID = #{reservationId}
+		]]>
+    </select>
+
 <select id="getReservationHistory" resultType="org.freezing.naive.dto.GetReservationHistoryOutDto">
 		<![CDATA[
 		    SELECT 
-		    R.ID, 
-		    R.START_TIME, 
-		    R.END_TIME, 
-		    R.STATUS, 
-		    S.NAME, 
+		    R.ID as RESERVATION_ID,
+		    R.START_TIME,
+		    R.END_TIME,
+		    R.STATUS,
+		    S.NAME as SEAT_NAME,
 		    F.FLOOR, 
-		    B.NAME 
+		    B.NAME as BUILDING_NAME
 		FROM 
 		    RESERVATION R 
 		JOIN 
@@ -27,5 +38,50 @@
 		LIMIT ${limit}
 		]]>
     </select>
+
+
+	<select id="getOwnReservation" resultType="org.freezing.naive.dto.GetOwnReservationsOutDto">
+		<![CDATA[
+		SELECT
+			R.ID as RESERVATION_ID,
+			R.START_TIME,
+			R.END_TIME,
+			R.STATUS,
+			S.NAME as SEAT_NAME,
+			F.FLOOR,
+			B.NAME as BUILDING_NAME,
+			R.EXTENDED_FROM_RESERVATION_ID
+		FROM
+			RESERVATION R
+				JOIN
+			SEAT S ON R.SEAT_ID = S.ID
+				JOIN
+			FLOOR F ON S.FLOOR_ID = F.ID
+				JOIN
+			BUILDING B ON F.BUILDING_ID = B.ID
+		WHERE
+			R.EMPLOYEE_ID = #{employeeId}
+		]]>
+    </select>
+
+	<insert id="reserve" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reservation (
+			seat_id, employee_id, start_time, end_time, status, created_at
+		) VALUES (
+					 #{seatId}, #{employeeId}, #{startTime}, #{endTime}, #{status}, #{createdAt}
+				 )
+	</insert>
+
+	<update id="cancel">
+		<![CDATA[
+		UPDATE RESERVATION R SET R.STATUS = 'CANCELLED' WHERE R.ID = #{reservationId}
+		]]>
+	</update>
+
+	<update id="setStatus">
+		<![CDATA[
+		UPDATE RESERVATION R SET R.STATUS = #{status} WHERE R.ID = #{reservationId}
+		]]>
+	</update>
 
 </mapper>

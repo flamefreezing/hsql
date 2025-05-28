@@ -53,4 +53,10 @@
 		]]>
     </select>
 
+	<update id="setStatus">
+		<![CDATA[
+		UPDATE SEAT S SET S.STATUS = #{status} WHERE S.ID = #{seatId}
+		]]>
+	</update>
+
 </mapper>
