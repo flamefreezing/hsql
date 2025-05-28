@@ -10,6 +10,12 @@
 		SELECT * FROM EMPLOYEE e WHERE e.name = #{name}
 		]]>
     </select>
+    
+    <select id="findById" resultType="org.freezing.naive.security.User">
+		<![CDATA[
+		SELECT * FROM EMPLOYEE e WHERE e.id = #{userId}
+		]]>
+    </select>
 
     <insert id="save" parameterType="org.freezing.naive.security.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO employee(name, password)

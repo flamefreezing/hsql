@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="org.freezing.naive.repository.FloorRepository">
+
+
+<select id="getFloorsByBuildingId" resultType="org.freezing.naive.dto.GetFloorsOutDto">
+		<![CDATA[
+		    SELECT 
+		    FLOOR.ID AS FLOOR_ID, 
+		    FLOOR.FLOOR 
+		FROM 
+		    FLOOR 
+		WHERE 
+		    FLOOR.BUILDING_ID = #{buildingId}
+		]]>
+    </select>
+
+</mapper>
