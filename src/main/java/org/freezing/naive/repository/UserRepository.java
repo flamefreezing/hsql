@@ -9,6 +9,6 @@ import java.util.Optional;
 @Mapper
 public interface UserRepository {
 
-    Optional<User> findByEmail(@Param("email") String email);
+    Optional<User> findByName(@Param("name") String name);
     void save(User user);
 }

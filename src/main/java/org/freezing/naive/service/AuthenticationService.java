@@ -19,28 +19,27 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
     public void register(RegisterRequest registerRequest) {
-        Optional<User> existedUser = userRepository.findByEmail(registerRequest.getEmail());
+        Optional<User> existedUser = userRepository.findByName(registerRequest.getName());
         if (existedUser.isPresent()) {
             throw new BusinessException("Email already in use", 400);
         }
 
         User user = new User();
-        user.setEmail(registerRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setName(registerRequest.getName());
+        user.setPassword(registerRequest.getPassword());
         userRepository.save(user);
     }
 
     public String login(LoginRequest loginRequest) {
-        Optional<User> existedUser = userRepository.findByEmail(loginRequest.getEmail());
+        Optional<User> existedUser = userRepository.findByName(loginRequest.getName());
         if (existedUser.isEmpty()) {
             throw new BusinessException("User not found", 400);
         }
 
-        if (!passwordEncoder.matches(loginRequest.getPassword(), existedUser.get().getPassword())) {
+        if (!loginRequest.getPassword().equals(existedUser.get().getPassword())) {
             throw new BusinessException("Wrong password", 400);
         }
 
