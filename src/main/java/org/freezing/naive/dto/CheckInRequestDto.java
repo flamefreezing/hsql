@@ -1,5 +1,8 @@
 package org.freezing.naive.dto;
 
-public class CheckInRequestDto {
+import lombok.Data;
 
+@Data
+public class CheckInRequestDto {
+	public Integer reservationId;
 }

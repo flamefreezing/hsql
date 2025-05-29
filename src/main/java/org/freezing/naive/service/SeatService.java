@@ -57,11 +57,17 @@ public class SeatService {
 			limit = 5;
 		}
 
-		List<GetAvailableSeatsOutDto> availableSeats = seatRepository.getAvailableSeats(startDateTime, endDateTime,
-				skip, limit);
+		List<GetAvailableSeatsOutDto> availableSeats = seatRepository.getAvailableSeats(startDateTime, endDateTime, skip, limit);
 		
 
 		return availableSeats;
+	}
+
+	public void checkin(Integer reservationId) {
+		// TODO Auto-generated method stub
+		
+		
+		
 	}
    
 

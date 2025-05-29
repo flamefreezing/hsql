@@ -2,6 +2,7 @@ package org.freezing.naive.controller;
 
 import java.util.List;
 
+import org.freezing.naive.dto.CheckInRequestDto;
 import org.freezing.naive.dto.DataResponse;
 import org.freezing.naive.dto.GetAvailableSeatsOutDto;
 import org.freezing.naive.dto.MessageResponse;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,16 @@ public class SeatController {
         try {
         	List<SeatOutDto> seats = seatService.getSeatsByFloorId(floorId);
         	return new ResponseEntity<>(new DataResponse(seats), HttpStatus.OK);
+		} catch (BusinessException e) {
+			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
+		}
+    }
+    
+    @GetMapping("/seats/check-in")
+    public ResponseEntity<?> checkin(@RequestBody CheckInRequestDto checkInRequestDto){
+        try {
+        	seatService.checkin(checkInRequestDto.getReservationId());
+        	return new ResponseEntity<>(new DataResponse("Successfully Check-in"), HttpStatus.OK);
 		} catch (BusinessException e) {
 			return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
 		}

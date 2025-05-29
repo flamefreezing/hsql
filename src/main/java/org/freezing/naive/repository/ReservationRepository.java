@@ -17,4 +17,5 @@ public interface ReservationRepository {
     		@Param("limit") Integer limit );
 	void reserve(Reservation reservation);
 	boolean isConflictTime(@Param("startDateTime") LocalDateTime startDateTime,@Param("endDateTime") LocalDateTime endDateTime);
+	Reservation findById(@Param("id") Integer id);
 }
