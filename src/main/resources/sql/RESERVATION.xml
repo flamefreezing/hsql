@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><mapper namespace="org.freezing.naive.repository.ReservationRepository">
+
+
+<select id="getOwnReservations" resultType="org.freezing.naive.dto.GetOwnReservationsOutDto">
+		<![CDATA[
+		    SELECT 
+		    R.ID as RESERVATION_ID, 
+		    R.START_TIME, 
+		    R.END_TIME, 
+		    R.STATUS, 
+		    S.NAME as SEAT_NAME, 
+		    F.FLOOR, 
+		    B.NAME as BUILDING_NAME 
+		FROM 
+		    RESERVATION R 
+		JOIN 
+		    SEAT S ON R.SEAT_ID = S.ID 
+		JOIN 
+		    FLOOR F ON S.FLOOR_ID = F.ID 
+		JOIN 
+		    BUILDING B ON F.BUILDING_ID = B.ID 
+		WHERE 
+		    R.EMPLOYEE_ID = #{employeeId} 
+		    AND R.STATUS IN ('PENDING', 'RESERVED','IN_USE')
+		    AND CAST(R.START_TIME AS DATE) >= CAST(SYSDATE AS DATE)
+		]]>
+    </select>
+
+
+
+<select id="getReservationHistory" resultType="org.freezing.naive.dto.GetReservationHistoryOutDto">
+		<![CDATA[
+		    SELECT 
+		    SEAT.NAME AS SEAT_NAME, 
+		    FLOOR.FLOOR AS FLOOR, 
+		    BUILDING.NAME AS BUILDING_NAME, 
+		    RESERVATION.ID AS RESERVATION_ID, 
+		    RESERVATION.START_TIME, 
+		    RESERVATION.END_TIME, 
+		    RESERVATION.STATUS 
+		FROM 
+		    SEAT 
+		JOIN 
+		    FLOOR ON SEAT.FLOOR_ID = FLOOR.ID 
+		JOIN 
+		    BUILDING ON FLOOR.BUILDING_ID = BUILDING.ID 
+		JOIN 
+		    RESERVATION ON SEAT.ID = RESERVATION.SEAT_ID
+		WHERE 
+		    RESERVATION.CREATED_AT > #{startDateTime} 
+		    AND RESERVATION.CREATED_AT < #{endDateTime}
+		OFFSET #{skip}
+		LIMIT #{limit}
+		]]>
+    </select>
+
+<select id="isConflictTime" resultType="boolean">
+		<![CDATA[
+		    SELECT 
+		    	COUNT(*)
+			FROM 
+		    	RESERVATION 
+			WHERE 
+				STATUS IN ('RESERVED', 'IN_USE')
+		    	AND (RESERVATION.START_TIME <= #{endDateTime} AND RESERVATION.END_TIME >= #{startDateTime})
+		]]>
+    </select>
+
+
+
+
+<insert id="reserve">
+<![CDATA[
+	INSERT INTO RESERVATION (SEAT_ID, EMPLOYEE_ID, START_TIME, END_TIME, STATUS, CREATED_AT)
+VALUES (#{seatId}, #{employeeId}, #{startTime}, #{endTime}, #{status}, #{createdAt})
+
+]]>
+</insert>
+
+
+
+<select id="findById" resultType="org.freezing.naive.dto.Reservation">
+<![CDATA[
+	SELECT 
+    R.ID, 
+    R.SEAT_ID, 
+    R.EMPLOYEE_ID, 
+    R.START_TIME, 
+    R.END_TIME, 
+    R.STATUS, 
+    R.CREATED_AT, 
+    R.CHECK_IN_AT, 
+    R.EXTENDED_FROM_RESERVATION_ID 
+FROM 
+    RESERVATION R 
+WHERE 
+    R.ID = #{id}
+
+]]>
+</select>
+
+
+
+<update id="updateStatus">
+<![CDATA[
+	UPDATE RESERVATION R
+SET STATUS = #{status}
+WHERE R.ID = #{id}
+
+]]>
+</update>
+
+</mapper>

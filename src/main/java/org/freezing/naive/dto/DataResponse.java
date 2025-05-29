@@ -8,5 +8,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DataResponse {
+	private Integer status = 200;
     private Object data;
+    
+    public DataResponse(Object data) {
+    	this.data = data;
+    }
 }
