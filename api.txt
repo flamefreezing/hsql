@@ -1,7 +1,7 @@
 ---------------------------------------------------------
-1. U0203. Retrieve All Buildings (Low Difficulty)
+1. U0203. Retrieve All Buildings (Low Difficulty) (DONG)
 
-GET http://localhost:8080/seats/buildings
+GET http://localhost:8080/seats/buildings 
 
 // 2xx
 status: 200 // optional
@@ -15,9 +15,9 @@ data:
 
 
 ---------------------------------------------------------
-2. U0204. Retrieve Floor (Low Difficulty)
+2. U0204. Retrieve Floor (Low Difficulty) (DONG)
 
-GET http://localhost:8080/seats/floors?buildingId=1
+GET http://localhost:8080/seats/floors?buildingId=1 
 
 // 2xx
 status: 200 // optional
@@ -31,7 +31,7 @@ data:
 
 
 ---------------------------------------------------------
-3. U0205. Return Seat (Medium difficulty)
+3. U0201.Retrieve Seat Status (Low Difficulty) (DONG)
 
 GET http://localhost:8080/seats?floorId=1
 
@@ -48,7 +48,7 @@ data:
 
 
 ---------------------------------------------------------
-4. U0101.Retrieve Available Seat By Period (Medium difficulty)
+4. U0101.Retrieve Available Seat By Period (Medium difficulty) (DUONG)
 
 GET http://localhost:8080/seats/available?date=&startTime=&endTime=&skip=&limit=
 
@@ -66,7 +66,7 @@ data:
 
 
 ---------------------------------------------------------
-5. U0105.Retrieve Reservation History (Low Difficulty)
+5. U0105.Retrieve Reservation History (Low Difficulty) (NAM)
 
 GET http://localhost:8080/reservations/history?startDate=&endDate=&skip=&limit=
 
@@ -87,7 +87,7 @@ data:
 
 
 ---------------------------------------------------------
-6. U0106.Retrieve My Reservation Status (Low Difficulty)
+6. U0106.Retrieve My Reservation Status (Low Difficulty) (DUONG)
 
 GET http://localhost:8080/reservations
 
@@ -109,7 +109,7 @@ data:
 
 
 ---------------------------------------------------------
-7. U0102.Register Reservation (High difficulty)
+7. U0102.Register Reservation (High difficulty) (DUONG)
 
 POST http://localhost:8080/reservations
 
@@ -125,17 +125,13 @@ status: 200 // must have
 data: string
 
 // 4xx
-response: {
-    data: {
-        error: string
-    }
-}
+error: string
 
 
 
 
 ---------------------------------------------------------
-8. U0103.Cancel Reservation (Low difficulty)
+8. U0103.Cancel Reservation (Low difficulty) (NAM)
 
 POST http://localhost:8080/reservations/cancel
 
@@ -148,17 +144,12 @@ status: 200 // optional
 data: string
 
 // 4xx
-response: {
-    data: {
-        error: string
-    }
-}
-
+error: string
 
 
 
 ---------------------------------------------------------
-9. U0205. Return Seat (Medium difficulty)
+9. U0205. Return Seat (Medium difficulty) (DONG)
 
 POST http://localhost:8080/seats/return
 
@@ -171,17 +162,12 @@ status: 200 // optional
 data: string
 
 // 4xx
-response: {
-    data: {
-        error: string
-    }
-}
-
+error: string
 
 
 
 ---------------------------------------------------------
-10. U0202.Check-in (Medium difficulty) - LOGIC tương tự RETURN
+10. U0202.Check-in (Medium difficulty) - LOGIC tương tự RETURN (NAM)
 
 POST http://localhost:8080/seats/check-in
 
@@ -194,17 +180,13 @@ status: 200 // optional
 data: string
 
 // 4xx
-response: {
-    data: {
-        error: string
-    }
-}
+error: string
 
 
 
 
 ---------------------------------------------------------
-11. A0101.Force Return Seat (Medium difficulty)
+11. A0101.Force Return Seat (Medium difficulty) (NAM)
 
 POST http://localhost:8080/admin/return
 
@@ -222,7 +204,7 @@ void
 
 
 ---------------------------------------------------------
-12. U0104.Extend Reservation Time (Highest difficulty)
+12. U0104.Extend Reservation Time (Highest difficulty) (DUONG)
 
 POST http://localhost:8080/reservations/extend
 
@@ -236,9 +218,4 @@ status: 200 // optional
 data: string
 
 // 4xx
-response: {
-    data: {
-        error: string
-    }
-}
-
+error: string

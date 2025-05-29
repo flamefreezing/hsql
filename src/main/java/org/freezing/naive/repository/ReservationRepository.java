@@ -1,5 +1,6 @@
 package org.freezing.naive.repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,4 +25,6 @@ public interface ReservationRepository {
 	
 	Reservation findInTime(@Param("seatId") Integer seatId);
 	Reservation findByExtendedFromReservationId(@Param("extendedFromReservationId") Integer extendedFromReservationId);
+	boolean hasTimeConflict(@Param("seatId") Integer seatId, @Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime);
+	Optional<Long> getUserReservedMinutesForDay(@Param("userId") Integer userId, @Param("date") LocalDate date);
 }

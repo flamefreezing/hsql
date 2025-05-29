@@ -1,7 +1,6 @@
 package org.freezing.naive.controller;
 
-import lombok.RequiredArgsConstructor;
-import org.freezing.naive.dto.DataResponse;
+import org.freezing.naive.dto.ErrorResponse;
 import org.freezing.naive.dto.LoginRequest;
 import org.freezing.naive.dto.MessageResponse;
 import org.freezing.naive.dto.RegisterRequest;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,7 +29,7 @@ public class AuthenticationController {
             authenticationService.register(registerRequest);
             return new ResponseEntity<>(new MessageResponse("User registered successfully"), HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
         }
     }
 
@@ -40,7 +39,7 @@ public class AuthenticationController {
             String jwt = authenticationService.login(loginRequest);
             return new ResponseEntity<>(jwt, HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new MessageResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatusCode.valueOf(e.getCode()));
         }
     }
 }

@@ -1,6 +1,7 @@
 package org.freezing.naive.controller;
 
 import org.freezing.naive.dto.DataResponse;
+import org.freezing.naive.dto.ErrorResponse;
 import org.freezing.naive.dto.ForceReturnInDto;
 import org.freezing.naive.dto.ReturnSeatInDto;
 import org.freezing.naive.exception.BusinessException;
@@ -25,7 +26,7 @@ public class AdminController {
         	adminService.forceReturn(forceReturnInDto.getSeatId());
             return new ResponseEntity<>(new DataResponse("Successfully Force Returned"), HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }
     }
 }

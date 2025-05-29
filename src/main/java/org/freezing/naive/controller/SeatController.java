@@ -1,10 +1,10 @@
 package org.freezing.naive.controller;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.freezing.naive.dto.CheckinSeatInDto;
 import org.freezing.naive.dto.DataResponse;
+import org.freezing.naive.dto.ErrorResponse;
 import org.freezing.naive.dto.GetAvailableSetsOutDto;
 import org.freezing.naive.dto.GetSeatsByFloorIdOutDto;
 import org.freezing.naive.dto.ReturnSeatInDto;
@@ -28,19 +28,23 @@ public class SeatController {
     private final SeatService seatService;
 
     @GetMapping("/seats")
-    public ResponseEntity<?> getSeatsByFloorId(@RequestParam("floorId") Integer floorId) {
+    public ResponseEntity<?> getSeatsByFloorId(@RequestParam(required = false, name = "floorId") Integer floorId) {
         List<GetSeatsByFloorIdOutDto> seats = seatService.getSeatsByFloorId(floorId);
         return new ResponseEntity<>(new DataResponse(seats), HttpStatus.OK);
     }
     
     @GetMapping("/seats/available")
-    public ResponseEntity<?> getAvailableSets(@RequestParam("date") LocalDate date,@RequestParam("startTime")  String startTime,
-    		@RequestParam("endTime") String endTime, @RequestParam("skip") Integer skip,@RequestParam("limit") Integer limit) {
+    public ResponseEntity<?> getAvailableSets(
+    		@RequestParam(required = false, name = "date") String date,
+    		@RequestParam(required = false, name = "startTime")  String startTime,
+    		@RequestParam(required = false, name = "endTime") String endTime, 
+    		@RequestParam(required = false, name = "skip") Integer skip,
+    		@RequestParam(required = false, name = "limit") Integer limit) {
         try {
             List<GetAvailableSetsOutDto> availableSeats = seatService.getAvailableSets(date, startTime, endTime, skip, limit);
             return new ResponseEntity<>(new DataResponse(availableSeats), HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }
     }
 
@@ -51,7 +55,7 @@ public class SeatController {
             seatService.checkin(checkinSeatInDto.getReservationId(), userId);
             return new ResponseEntity<>(new DataResponse("Successfully Checked-in"), HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }
     }
 
@@ -62,7 +66,7 @@ public class SeatController {
             seatService.returnSeat(returnSeatInDto.getReservationId(), userId);
             return new ResponseEntity<>(new DataResponse("Successfully Returned"), HttpStatus.OK);
         } catch (BusinessException e) {
-            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+            return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }
     }
 }

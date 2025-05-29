@@ -20,7 +20,6 @@ public class BuildingController {
 
     @GetMapping("/seats/buildings")
     public ResponseEntity<?> getBuildings() {
-    	System.out.println("Here");
         List<GetBuildingsOutDto> buildings = buildingService.getBuildings();
         return new ResponseEntity<>(Map.of("data", buildings), HttpStatus.OK);
     }

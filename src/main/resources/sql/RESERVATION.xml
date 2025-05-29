@@ -27,6 +27,32 @@
 		]]>
     </select>
     
+    <select id="hasTimeConflict" resultType="boolean">
+		<![CDATA[
+		SELECT
+			COUNT(*) > 0
+		FROM
+			RESERVATION R
+		WHERE
+			R.SEAT_ID = #{seatId}
+			AND R.STATUS IN ('IN_USE', 'RESERVED') 
+			AND R.START_TIME <= #{endDateTime}
+			AND R.END_TIME >= #{startDateTime}
+		]]>
+    </select>
+    
+    <select id="getUserReservedMinutesForDay" resultType="long">
+		<![CDATA[
+		SELECT 
+			SUM(DATEDIFF('minute', START_TIME, END_TIME)) AS TOTAL_MINUTES
+		FROM RESERVATION R
+		WHERE 
+			R.EMPLOYEE_ID = #{userId}
+			AND R.STATUS IN ('RESERVED', 'IN_USE')
+			AND CAST(START_TIME as DATE) = #{date}
+		]]>
+    </select>
+    
     <select id="findByExtendedFromReservationId" resultType="org.freezing.naive.dto.Reservation">
 		<![CDATA[
 		SELECT
@@ -86,6 +112,7 @@
 			BUILDING B ON F.BUILDING_ID = B.ID
 		WHERE
 			R.EMPLOYEE_ID = #{employeeId}
+			AND CAST(R.START_TIME AS DATE) >= CAST(SYSDATE AS DATE)
 		]]>
     </select>
 

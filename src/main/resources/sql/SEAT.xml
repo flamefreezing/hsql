@@ -22,6 +22,17 @@
 		    SEAT.FLOOR_ID = #{floorId}
 		]]>
     </select>
+    
+    
+    <select id="isSeatBroken" resultType="boolean">
+		<![CDATA[
+		    SELECT COUNT(*) > 0
+		FROM 
+		    SEAT 
+		WHERE 
+		    SEAT.ID = #{seatId} AND STATUS = 'BROKEN'
+		]]>
+    </select>
 
 
 
@@ -58,5 +69,21 @@
 		UPDATE SEAT S SET S.STATUS = #{status} WHERE S.ID = #{seatId}
 		]]>
 	</update>
+
+
+
+<select id="findById" resultType="org.freezing.naive.dto.Seat">
+		<![CDATA[
+		    SELECT 
+		    SEAT.ID, 
+		    SEAT.FLOOR_ID, 
+		    SEAT.NAME, 
+		    SEAT.STATUS 
+		FROM 
+		    SEAT 
+		WHERE 
+		    SEAT.ID = #{id}
+		]]>
+    </select>
 
 </mapper>
