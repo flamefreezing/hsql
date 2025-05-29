@@ -13,5 +13,5 @@ public interface SeatRepository {
     List<GetSeatsByFloorIdOutDto> getSeatsByFloorId(@Param("floorId") Integer floorId);
     List<GetAvailableSetsOutDto> getAvailableSeats(@Param("startTime") LocalDateTime startTime, @Param("endTime") LocalDateTime endTime, @Param("skip") Integer skip, @Param("limit") Integer limit);
 
-    void setStatus(String status, Integer seatId);
+    void setStatus(@Param("status") String status,@Param("seatId") Integer seatId);
 }

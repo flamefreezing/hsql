@@ -12,6 +12,31 @@
 			R.ID = #{reservationId}
 		]]>
     </select>
+    
+    <select id="findInTime" resultType="org.freezing.naive.dto.Reservation">
+		<![CDATA[
+		SELECT
+			*
+		FROM
+			RESERVATION R
+		WHERE
+			R.SEAT_ID = #{seatId}
+			AND R.STATUS = 'IN_USE'
+			AND R.START_TIME <= CURRENT_TIMESTAMP
+			AND R.END_TIME >= CURRENT_TIMESTAMP
+		]]>
+    </select>
+    
+    <select id="findByExtendedFromReservationId" resultType="org.freezing.naive.dto.Reservation">
+		<![CDATA[
+		SELECT
+			*
+		FROM
+			RESERVATION R
+		WHERE
+			R.EXTENDED_FROM_RESERVATION_ID = ${extendedFromReservationId}
+		]]>
+    </select>
 
 <select id="getReservationHistory" resultType="org.freezing.naive.dto.GetReservationHistoryOutDto">
 		<![CDATA[
@@ -69,6 +94,14 @@
 			seat_id, employee_id, start_time, end_time, status, created_at
 		) VALUES (
 					 #{seatId}, #{employeeId}, #{startTime}, #{endTime}, #{status}, #{createdAt}
+				 )
+	</insert>
+	
+	<insert id="extend" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO reservation (
+			seat_id, employee_id, start_time, end_time, status, created_at, check_in_at, extended_from_reservation_id 
+		) VALUES (
+					 #{seatId}, #{employeeId}, #{startTime}, #{endTime}, #{status}, #{createdAt}, #{checkInAt}, #{extendedFromReservationId}
 				 )
 	</insert>
 

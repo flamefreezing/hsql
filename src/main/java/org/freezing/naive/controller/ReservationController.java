@@ -62,4 +62,15 @@ public class ReservationController {
             return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
         }
     }
+    
+    @PostMapping("/reservations/extend")
+    public ResponseEntity<?> cancel(@RequestBody ExtendReservationInDto extendReservationInDto, HttpServletRequest request) {
+        try {
+            Integer userId = Integer.parseInt((String)request.getAttribute("userId"));
+            reservationService.extend(extendReservationInDto, userId);
+            return new ResponseEntity<>(new DataResponse("Successfully Extended"), HttpStatus.OK);
+        } catch (BusinessException e) {
+            return new ResponseEntity<>(new DataResponse(e.getMessage()), HttpStatus.valueOf(e.getCode()));
+        }
+    }
 }

@@ -3,14 +3,22 @@ package org.freezing.naive.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
-import org.freezing.naive.dto.*;
+import org.freezing.naive.dto.CheckinSeatInDto;
+import org.freezing.naive.dto.DataResponse;
+import org.freezing.naive.dto.GetAvailableSetsOutDto;
+import org.freezing.naive.dto.GetSeatsByFloorIdOutDto;
+import org.freezing.naive.dto.ReturnSeatInDto;
 import org.freezing.naive.exception.BusinessException;
 import org.freezing.naive.service.SeatService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

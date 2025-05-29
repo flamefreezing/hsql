@@ -20,4 +20,8 @@ public interface ReservationRepository {
     Reservation findById(@Param("reservationId") Integer reservationId);
 
     void setStatus(@Param("status") String status, @Param("reservationId") Integer reservationId);
+	void extend(Reservation newReservation);
+	
+	Reservation findInTime(@Param("seatId") Integer seatId);
+	Reservation findByExtendedFromReservationId(@Param("extendedFromReservationId") Integer extendedFromReservationId);
 }

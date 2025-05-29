@@ -50,4 +50,24 @@ public class ReservationService {
     public void cancel(Integer reservationId, Integer userId) {
         reservationRepository.cancel(reservationId, userId);
     }
+
+	public void extend(ExtendReservationInDto extendReservationInDto, Integer userId) {
+		Reservation lastReservation = reservationRepository.findById(extendReservationInDto.getReservationId());
+		Reservation newReservation = new Reservation();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		
+		LocalDateTime endLocalDateTime = LocalDateTime.parse(extendReservationInDto.getEndTime(), formatter);
+		
+		newReservation.setCheckInAt(endLocalDateTime.minusHours(1));
+		newReservation.setCreatedAt(LocalDateTime.now());
+		newReservation.setEmployeeId(userId);
+		newReservation.setEndTime(endLocalDateTime);
+		newReservation.setExtendedFromReservationId(extendReservationInDto.getReservationId());
+		newReservation.setSeatId(lastReservation.getSeatId());
+		newReservation.setStartTime(endLocalDateTime.minusHours(1));
+		newReservation.setStatus("IN_USE");
+		
+		reservationRepository.extend(newReservation);
+	}
 }
